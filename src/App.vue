@@ -1,64 +1,69 @@
-<script setup>
-import { ref, onMounted } from 'vue'
-// реактивное состояние
-const count = ref(0)
-// функции, изменяющие состояние и запускающие обновление
-function increment(){
-  count.value++
-}
-// хуки жизненного цикла
-onMounted(() => {
-  console.log(`Начальный счет: ${count.value}.`)
-})
-</script>
-
-<template>
-  <button @click = "increment">Счетчик: {{ count }}</button>
-</template>
-
-
-<!-- Опциональный API -->
-<!-- <script>
-// import { createApp, ref } from 'vue'
-
+<script>
 export default{
-  // Свойства, возвращенные из data(), переходят в реактивное состояние
-  // и отправляются в this
-  data(){
+  data() {
     return {
-      count: 0
+      placeholder: 'Введите название заметки',
+      title: 'Список заметок',
+      inputValue: '',
+      notes: ['Заметка 1', 'Заметка 2']
     }
   },
-  // Методы – это функции, которые изменяют состояние и инициируют обновление.
-  // Их можно привязать как обработчики событий в шаблонах.
   methods: {
-    increment(){
-      this.count++
+        addNewNote() {
+            if(this.inputValue !== '') {
+                this.notes.push(this.inputValue)
+                this.inputValue = '' 
+            }
+        },
+        toUpperCase(item){
+            return item.toUpperCase()
+        },
+        deleteNote(index) {
+            this.notes.splice(index, 1)
+        }
+    },
+    computed: {
+        doubleCountComputed() {
+            console.log('doubleCountComputed')
+            return this.notes.length * 2
+        }
+    },
+    watch: {
+        inputValue(value) {
+            if (value.length > 10) {
+                this.inputValue = ''
+            }
+        }
     }
-  },
-
-  // Хуки жизненного цикла вызываются на разных этапах
-  // жизненный цикл компонента
-  // Эта функция будет вызвана при монтаже компонента.
-
-  mounted(){
-    console.log(`начальный счет: ${this.count}.`)
-  }
 }
-// let count = ref(0);
 </script>
 
 <template>
-  <button @click="increment">Счетчик: {{ count }}</button>
-
-  <div id="app">
-  <button @click="count++">
-    Рахунок: {{ count }}
-  </button>
-</div> -->
-<!--   
+  <div class="container" id="app">
+            <div class="card">
+                <h1>{{ title }}</h1>
+                <div class="form-control">
+                    <input 
+                        type="text" 
+                        :placeholder="placeholderString" 
+                        v-model="inputValue"
+                        @keypress.enter="addNewNote"
+                    />
+                </div>
+                <button class="btn" @click="addNewNote">Добавить</button>
+                <hr/>
+                <ul class="list" v-if="notes.length !== 0">
+                    <li class="list-item" v-for="(myNote, index) in notes" :key="myNote">
+                        
+                        <span :class="['bold', {'primary': myNote.length > 5}]">{{ toUpperCase(myNote) }}</span>
+                        <button class="btn danger" @click="deleteNote(index)">Удалить</button>
+                    </li>
+                    <hr>
+                    <li>
+                        <strong>Общее количество: {{ notes.length }}</strong> | Удвоенное: {{ doubleCountComputed }}
+                    </li>
+                </ul>
+                <div v-else>Заметок пока нет. Добавьте первую</div>
+            </div>
+        </div>
 </template>
-
-<style scoped>
-
-</style> --> 
