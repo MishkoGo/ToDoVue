@@ -22,6 +22,10 @@ strong,
   font-weight: 500;
 }
 
+.strikethrough {
+  text-decoration: line-through;
+}
+
 ol,
 p,
 ul {
@@ -80,7 +84,7 @@ h3 {
   text-decoration: none;
   text-transform: uppercase;
   margin-right: 10px;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 0.7rem;
   white-space: nowrap;
   font-weight: 700;
   outline: none;
@@ -167,7 +171,20 @@ h3 {
 
 .list-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   padding: 0.5rem 0;
+  align-items: center;
+}
+
+.input-main {
+  display: flex;
+}
+.checkbox {
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+input:checked {
+  background-color: #2196F3;
 }

@@ -5,7 +5,8 @@ export default{
       placeholder: 'Введите название заметки',
       title: 'Список заметок',
       inputValue: '',
-      notes: ['Заметка 1', 'Заметка 2']
+      notes: [],
+      checkedNotes: []
     }
   },
   methods: {
@@ -16,16 +17,10 @@ export default{
             }
         },
         toUpperCase(item){
-            return item.toUpperCase()
+            return item;
         },
         deleteNote(index) {
             this.notes.splice(index, 1)
-        }
-    },
-    computed: {
-        doubleCountComputed() {
-            console.log('doubleCountComputed')
-            return this.notes.length * 2
         }
     },
     watch: {
@@ -53,14 +48,23 @@ export default{
                 <button class="btn" @click="addNewNote">Добавить</button>
                 <hr/>
                 <ul class="list" v-if="notes.length !== 0">
-                    <li class="list-item" v-for="(myNote, index) in notes" :key="myNote">
-                        
-                        <span :class="['bold', {'primary': myNote.length > 5}]">{{ toUpperCase(myNote) }}</span>
-                        <button class="btn danger" @click="deleteNote(index)">Удалить</button>
+                    <li class="list-item" v-for="(myNote, index) in notes" :key="index">
+                        <div class="input-main">
+                            <input 
+                                type="checkbox" 
+                                class="checkbox"
+                                v-model="checkedNotes[index]"
+                            >
+                            <span :class="['bold', { 'strikethrough': checkedNotes[index] }]">{{ toUpperCase(myNote) }}</span>
+                        </div>
+                        <div class="input-button">
+                            <button class="btn danger" @click="deleteNote(index)">Х</button>
+                        </div>
+                       
                     </li>
                     <hr>
                     <li>
-                        <strong>Общее количество: {{ notes.length }}</strong> | Удвоенное: {{ doubleCountComputed }}
+                        <strong>Общее количество: {{ notes.length }}</strong>
                     </li>
                 </ul>
                 <div v-else>Заметок пока нет. Добавьте первую</div>
