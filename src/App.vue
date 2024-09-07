@@ -21,12 +21,21 @@ export default{
         },
         deleteNote(index) {
             this.notes.splice(index, 1)
+        },
+        editNote(index) {
+            this.inputValue = this.notes[index]
+            this.notes.splice(index, 1)
         }
     },
     watch: {
         inputValue(value) {
             if (value.length > 10) {
                 this.inputValue = ''
+            }
+        },
+        numbers(){
+            if(this.checkedNotes) {
+                this.notes.length;
             }
         }
     }
@@ -58,13 +67,14 @@ export default{
                             <span :class="['bold', { 'strikethrough': checkedNotes[index] }]">{{ toUpperCase(myNote) }}</span>
                         </div>
                         <div class="input-button">
+                            <button class="btn edit" @click="editNote(index)"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path d="M7.127 22.562l-7.127 1.438 1.438-7.128 5.689 5.69zm1.414-1.414l11.228-11.225-5.69-5.692-11.227 11.227 5.689 5.69zm9.768-21.148l-2.816 2.817 5.691 5.691 2.816-2.819-5.691-5.689z"/></svg></button>
                             <button class="btn danger" @click="deleteNote(index)">Х</button>
                         </div>
                        
                     </li>
                     <hr>
                     <li>
-                        <strong>Общее количество: {{ notes.length }}</strong>
+                        <span v-if="checkedNotes[index] !== false">Общее количество: {{ notes.length }}</span>
                     </li>
                 </ul>
                 <div v-else>Заметок пока нет. Добавьте первую</div>
